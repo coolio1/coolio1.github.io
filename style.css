@@ -186,6 +186,7 @@ main {
   font-size: 0.88rem;
   display: block;
   width: fit-content;
+  margin-bottom: 0.5rem;
 }
 
 .hero-ctas {
