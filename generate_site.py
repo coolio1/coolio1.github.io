@@ -504,7 +504,7 @@ index_html = f'''<!DOCTYPE html>
       <div class="hero-text">
         <h1>Nuno Quental</h1>
         <blockquote class="hero-quote">&laquo;Uma gestão urbanística correcta faz-se com a preservação, antes de mais, dos espaços verdes existentes.&raquo;</blockquote>
-        <p class="hero-sub">Engenheiro do ambiente. Investigador em sustentabilidade urbana.</p>
+        <p class="hero-sub">Sustentabilidade urbana, energia e território.</p>
         <div class="hero-ctas">
           <a href="escritos.html" class="cta">Publicações &rarr;</a>
           <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/" target="_blank" class="cta cta-secondary">Mapeando o Verde do Porto &rarr;</a>
@@ -530,6 +530,20 @@ index_html = f'''<!DOCTYPE html>
           <figcaption>2024</figcaption>
         </figure>
       </div>
+    </section>
+
+    <section class="blog-preview">
+      <h2>Artigos recentes</h2>
+      <ul class="blog-list">
+        <li>
+          <time>30 Mar 2026</time>
+          <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/2026/03/30/acessibilidade-verde-publico-porto.html" target="_blank">Acessibilidade a Espaços Verdes Públicos no Porto: Uma Análise Espacial pelo Método 2SFCA</a>
+        </li>
+        <li>
+          <time>21 Mar 2026</time>
+          <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/2026/03/21/mudanca-verde-porto-1985-2025.html" target="_blank">Dinâmicas de Ocupação do Solo e Cobertura Vegetal na Cidade do Porto (1985–2025)</a>
+        </li>
+      </ul>
     </section>
 
     <aside class="pullquote">
