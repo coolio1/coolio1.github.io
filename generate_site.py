@@ -357,7 +357,7 @@ escritos_html = f'''<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Escritos — Nuno Quental</title>
+  <title>Publicações — Nuno Quental</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -366,14 +366,14 @@ escritos_html = f'''<!DOCTYPE html>
       <a href="index.html" class="nav-name">NQ</a>
       <div class="nav-links">
         <a href="index.html">Início</a>
-        <a href="escritos.html" class="active">Escritos</a>
+        <a href="escritos.html" class="active">Publicações</a>
       </div>
     </nav>
   </header>
 
   <main>
     <div class="page-header">
-      <h1>Escritos</h1>
+      <h1>Publicações</h1>
       <p class="intro">Compilação de {total_items} textos ao longo de mais de duas décadas — da investigação académica à opinião pública, passando por trabalhos técnicos e profissionais.</p>
     </div>
 
@@ -418,7 +418,7 @@ index_html = f'''<!DOCTYPE html>
       <a href="index.html" class="nav-name">NQ</a>
       <div class="nav-links">
         <a href="index.html">Início</a>
-        <a href="escritos.html">Escritos</a>
+        <a href="escritos.html">Publicações</a>
         <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/" target="_blank">Porto Verde</a>
       </div>
     </nav>
@@ -570,7 +570,7 @@ h1 { font-size: 2rem; color: var(--accent); margin-bottom: 0.3rem; }
 }
 .links a:hover { color: var(--accent); }
 
-/* Escritos page */
+/* Publicações page */
 .intro { font-style: italic; color: var(--muted); margin-bottom: 1.5rem; }
 .toc {
   background: #f0f4f7;
