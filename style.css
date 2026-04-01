@@ -184,6 +184,8 @@ main {
 .cta-small {
   padding: 0.55rem 1.3rem;
   font-size: 0.88rem;
+  display: block;
+  width: fit-content;
 }
 
 .hero-ctas {
