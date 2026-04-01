@@ -205,6 +205,17 @@ main {
   margin-bottom: 1.2rem;
 }
 
+.blog-heading {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 1.2rem;
+  margin-bottom: 0.4rem;
+}
+
 .blog-list {
   list-style: none;
 }
