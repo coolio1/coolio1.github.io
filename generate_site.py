@@ -358,6 +358,37 @@ escritos_html = f'''<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Publicações — Nuno Quental</title>
+
+  <!-- SEO meta -->
+  <meta name="description" content="Colecção de {total_items} publicações de Nuno Quental — artigos científicos, textos de opinião, trabalhos técnicos e profissionais sobre sustentabilidade, ambiente e urbanismo.">
+  <link rel="canonical" href="https://coolio1.github.io/escritos.html">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Publicações — Nuno Quental">
+  <meta property="og:description" content="Colecção de {total_items} publicações sobre sustentabilidade, ambiente e urbanismo — da investigação académica à opinião pública.">
+  <meta property="og:image" content="https://coolio1.github.io/nuno.jpg">
+  <meta property="og:url" content="https://coolio1.github.io/escritos.html">
+  <meta property="og:type" content="website">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Publicações — Nuno Quental",
+    "description": "Colecção de {total_items} publicações de Nuno Quental sobre sustentabilidade, ambiente e urbanismo.",
+    "url": "https://coolio1.github.io/escritos.html",
+    "author": {{
+      "@type": "Person",
+      "name": "Nuno Quental",
+      "url": "https://coolio1.github.io/"
+    }},
+    "numberOfItems": {total_items}
+  }}
+  </script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -367,6 +398,7 @@ escritos_html = f'''<!DOCTYPE html>
       <div class="nav-links">
         <a href="index.html">Início</a>
         <a href="escritos.html" class="active">Publicações</a>
+        <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/" target="_blank">Porto Verde</a>
       </div>
     </nav>
   </header>
@@ -410,6 +442,49 @@ index_html = f'''<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nuno Quental</title>
+
+  <!-- SEO meta -->
+  <meta name="description" content="Nuno Quental — engenheiro do ambiente e investigador em sustentabilidade urbana. Publicações académicas, projecto Porto Verde e percurso profissional na Comissão Europeia.">
+  <meta name="keywords" content="Nuno Quental, engenheiro do ambiente, sustentabilidade urbana, Porto Verde, espaços verdes, Comissão Europeia, publicações, investigação, ambiente, Porto">
+  <meta name="google-site-verification" content="Lkfn0DpuOYZdEePSv1vr4_iStVt6XfX5_mb4Sw3jXfY">
+  <link rel="canonical" href="https://coolio1.github.io/">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Nuno Quental — Engenheiro do Ambiente e Investigador">
+  <meta property="og:description" content="Engenheiro do ambiente e investigador em sustentabilidade urbana. Publicações académicas, projecto Porto Verde e percurso profissional.">
+  <meta property="og:image" content="https://coolio1.github.io/nuno.jpg">
+  <meta property="og:url" content="https://coolio1.github.io/">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nuno Quental — Engenheiro do Ambiente e Investigador">
+  <meta name="twitter:description" content="Engenheiro do ambiente e investigador em sustentabilidade urbana. Publicações académicas, projecto Porto Verde e percurso profissional.">
+  <meta name="twitter:image" content="https://coolio1.github.io/nuno.jpg">
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {{
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Nuno Quental",
+    "jobTitle": "Engenheiro do Ambiente",
+    "description": "Investigador em sustentabilidade urbana e engenheiro do ambiente.",
+    "url": "https://coolio1.github.io/",
+    "image": "https://coolio1.github.io/nuno.jpg",
+    "affiliation": {{
+      "@type": "Organization",
+      "name": "Comissão Europeia"
+    }},
+    "sameAs": [
+      "https://www.linkedin.com/in/nquental",
+      "https://scholar.google.com/citations?user=NoCUypYAAAAJ"
+    ]
+  }}
+  </script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
