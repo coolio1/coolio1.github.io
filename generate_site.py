@@ -523,11 +523,11 @@ index_html = f'''<!DOCTYPE html>
         <ul class="blog-list">
           <li>
             <time>30 Mar</time>
-            <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/2026/03/30/acessibilidade-verde-publico-porto.html" target="_blank">Acessibilidade a espaços verdes públicos no Porto</a>
+            <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/posts/acessibilidade-verde-publico-porto/" target="_blank">Acessibilidade a espaços verdes públicos no Porto</a>
           </li>
           <li>
             <time>21 Mar</time>
-            <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/2026/03/21/mudanca-verde-porto-1985-2025.html" target="_blank">Dinâmicas de ocupação do solo e cobertura vegetal (1985–2025)</a>
+            <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/posts/mudanca-verde-porto-1985-2025/" target="_blank">Dinâmicas de ocupação do solo e cobertura vegetal (1985–2025)</a>
           </li>
         </ul>
       </div>
