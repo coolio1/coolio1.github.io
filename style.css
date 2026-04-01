@@ -192,6 +192,55 @@ main {
   flex-wrap: wrap;
 }
 
+/* ---- Blog preview ---- */
+.blog-preview {
+  padding: 3rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.blog-preview h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.8rem;
+  color: var(--ink);
+  margin-bottom: 1.2rem;
+}
+
+.blog-list {
+  list-style: none;
+}
+
+.blog-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.blog-list li:last-child { border-bottom: none; }
+
+.blog-list time {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  letter-spacing: 0.02em;
+  min-width: 5.5rem;
+}
+
+.blog-list a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.4;
+  transition: color var(--transition);
+}
+
+.blog-list a:hover {
+  color: var(--accent);
+}
+
 /* ---- Pullquotes ---- */
 .pullquote {
   padding: 2rem 0;
