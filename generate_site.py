@@ -447,11 +447,11 @@ index_html = f'''<!DOCTYPE html>
       </div>
       <div class="projeto-imagens">
         <figure>
-          <img src="covers/porto_deficit.png" alt="Défice de espaços verdes no Porto" loading="lazy">
+          <img src="covers/porto_deficit.jpg" alt="Défice de espaços verdes no Porto" loading="lazy">
           <figcaption>Défice de espaços verdes</figcaption>
         </figure>
         <figure>
-          <img src="covers/porto_2024.png" alt="Porto em 2024" loading="lazy">
+          <img src="covers/porto_2024.jpg" alt="Porto em 2024" loading="lazy">
           <figcaption>2024</figcaption>
         </figure>
       </div>
