@@ -254,7 +254,7 @@ main {
 
 /* ---- Pullquotes ---- */
 .pullquote {
-  padding: 2rem 0;
+  padding: 1.2rem 0;
   border-top: 1px solid var(--border);
   text-align: center;
   max-width: 640px;
@@ -289,7 +289,7 @@ main {
   grid-template-columns: 1fr 1fr;
   gap: 2.5rem;
   align-items: center;
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   border-top: 1px solid var(--border);
 }
 
@@ -366,7 +366,7 @@ main {
 
 /* ---- Bio ---- */
 .bio {
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   border-top: 1px solid var(--border);
 }
 
@@ -416,7 +416,7 @@ main {
 }
 
 /* ---- Link cards ---- */
-.links { padding: 2rem 0 4rem; }
+.links { padding: 1.5rem 0 2rem; }
 
 .links h2 {
   font-family: 'Playfair Display', Georgia, serif;
@@ -607,7 +607,7 @@ main {
 
 /* Preview on index */
 .escritos-preview {
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   border-top: 1px solid var(--border);
 }
 
