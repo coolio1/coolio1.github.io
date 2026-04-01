@@ -102,9 +102,8 @@ main {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 3rem;
-  padding: 5rem 0 4rem;
-  min-height: 60vh;
+  gap: 2rem;
+  padding: 2.5rem 0 1.5rem;
 }
 
 .hero-text h1 {
@@ -377,7 +376,7 @@ main {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.8rem;
   color: var(--ink);
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.8rem;
   letter-spacing: -0.02em;
 }
 
