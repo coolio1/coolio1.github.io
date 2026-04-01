@@ -543,8 +543,8 @@ index_html = f'''<!DOCTYPE html>
     </section>
 
     <aside class="pullquote">
-      <blockquote>&laquo;Creio que embora o crescimento económico possa favorecer o desenvolvimento, a economia não é um componente do desenvolvimento, mas sim um dos instrumentos que para ele podem contribuir.&raquo;</blockquote>
-      <cite>— Desenvolver, crescer ou... que fazer?, 2011</cite>
+      <blockquote>&laquo;A chave estará numa aposta múltipla: valorizar os planos, investir nas instituições, promover a cidadania activa e encarar os políticos como os primeiros guardiões e actores capazes de transformar as estratégias em realidade.&raquo;</blockquote>
+      <cite>— Ordem nos planos, 2007</cite>
     </aside>
 
     <section class="bio">
@@ -554,8 +554,8 @@ index_html = f'''<!DOCTYPE html>
     </section>
 
     <aside class="pullquote pullquote-alt">
-      <blockquote>&laquo;Lamentavelmente, esta oportunidade de recuperar o Centro Histórico do Porto respeitando os princípios da Carta de Veneza está a ser em boa parte perdida.&raquo;</blockquote>
-      <cite>— Centro Histórico do Porto numa encruzilhada, 2018</cite>
+      <blockquote>&laquo;O contributo dos cidadãos será, por assim dizer, a espinha dorsal de todo este processo.&raquo;</blockquote>
+      <cite>— Futuro Sustentável, 2005</cite>
     </aside>
 
     <section class="links">
@@ -566,7 +566,7 @@ index_html = f'''<!DOCTYPE html>
     </section>
 
     <aside class="pullquote">
-      <blockquote>&laquo;Existem outras batalhas a travar, batalhas perante as quais nem agora podemos esmorecer.&raquo;</blockquote>
+      <blockquote>&laquo;As crises são oportunidades para repensar decisões e realocar capital, usando-o de forma mais eficiente.&raquo;</blockquote>
       <cite>— Oportunidade para vencer a crise climática, 2020</cite>
     </aside>
   </main>
