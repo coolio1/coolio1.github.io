@@ -88,6 +88,9 @@ def format_apa(item):
             if pages:
                 ref += f', {pages}'
             ref += '.'
+        if doi:
+            doi_url = f'https://doi.org/{doi}'
+            ref += f' <a href="{doi_url}" target="_blank">{doi_url}</a>'
     elif typ == 'bookSection':
         editors = [c for c in item.get('creators', []) if c['type'] == 'editor']
         ed_str = ''
@@ -288,14 +291,8 @@ def render_items(items_list, show_covers=False, show_year_markers=False):
         doi = item.get('doi')
         url = item.get('url')
         pdf_badge = f' <a href="pdfs/{pdf}" class="pdf-link" title="Descarregar PDF" target="_blank">PDF</a>' if pdf else ''
-        if doi:
-            doi_url = f'https://doi.org/{doi}'
-            link_badge = f' <a href="{doi_url}" class="doi-link" title="DOI" target="_blank">DOI</a>'
-        elif url:
-            link_badge = f' <a href="{url}" class="url-link" title="Ver online" target="_blank">URL</a>'
-        else:
-            link_badge = ''
-        badges = pdf_badge + link_badge
+        url_badge = f' <a href="{url}" class="url-link" title="Ver online" target="_blank">URL</a>' if url else ''
+        badges = pdf_badge + url_badge
         if cover and pdf:
             html += f'        <li class="has-cover"><a href="pdfs/{pdf}" target="_blank" class="cover-thumb"><img src="covers/{cover}" alt="" loading="lazy"></a><div>{apa}{badges}</div></li>\n'
         else:
