@@ -794,6 +794,30 @@ ol.publications li a:not(.pdf-link):hover {
   box-shadow: 0 3px 8px rgba(231,76,60,0.4);
 }
 
+.url-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none !important;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark, #1a5276));
+  color: #fff !important;
+  letter-spacing: 0.04em;
+  transition: all var(--transition);
+  box-shadow: 0 1px 3px rgba(26,82,118,0.3);
+}
+
+.url-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(26,82,118,0.4);
+}
+
 /* ---- Footer ---- */
 footer {
   max-width: 1000px;
