@@ -181,12 +181,8 @@ def categorize(item):
         return 'tese'
     elif item.get('itemID') == 165:  # Avaliação contingente Bom Sucesso -> trabalhos
         return 'trabalhos'
-    elif typ in ('journalArticle', 'bookSection'):
-        # Só com publicação (revista/livro) é que é científico
-        has_pub = item.get('publicationTitle') or item.get('bookTitle')
-        return 'cientifico' if has_pub else 'trabalhos'
-    elif typ == 'conferencePaper':
-        return 'trabalhos'
+    elif typ in ('journalArticle', 'bookSection', 'conferencePaper'):
+        return 'cientifico'
     elif typ == 'report' or typ == 'magazineArticle':
         return 'trabalhos'
     elif typ == 'newspaperArticle':
