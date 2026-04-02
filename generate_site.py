@@ -199,7 +199,7 @@ def categorize(item):
             return 'op_mobilidade'
         # Cidade, Urbanismo e Espaços Verdes
         CITY_IDS = {182, 177, 168, 167, 166, 185, 162, 161, 190, 188, 184,
-                    163, 174, 205, 201, 173, 181}
+                    163, 174, 205, 201, 173, 181, 246, 248}
         if iid in CITY_IDS:
             return 'op_cidade'
         # Ambiente e Sustentabilidade (tudo o resto)
