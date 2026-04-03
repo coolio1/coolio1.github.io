@@ -319,7 +319,7 @@ top_sections = [
     },
     {
         'id': 'trabalhos',
-        'label': 'Relatórios e Trabalhos',
+        'label': 'Relatórios Técnicos',
         'nav_label': 'Relatórios',
         'subs': [('', categories.get('trabalhos', []))],
     },
@@ -420,8 +420,64 @@ for sec in top_sections:
         escritos_sections += f'      </ol>\n'
     escritos_sections += f'    </section>\n\n'
 
+# Escolares section (Porto Editora PDFs — not from Zotero)
+ESCOLARES_DIR = os.path.join(PDFS_DIR, 'Porto Editora')
+ESCOLARES_EXCLUDE = {'as-dunas.pdf'}  # superseded by as-dunas-v2.pdf
+
+ESCOLARES_TITLES = {
+    'a-vida.pdf': 'A vida',
+    'agricultura-e-diversidade.pdf': 'Agricultura e diversidade',
+    'agricultura-e-domesticacao.pdf': 'Agricultura e domesticação',
+    'animais-vs-plantas.pdf': 'Animais vs. plantas',
+    'as-dunas-v2.pdf': 'As dunas',
+    'aves-nas-cidades.pdf': 'Aves nas cidades',
+    'biomas-e-factores-abioticos.pdf': 'Biomas e factores abióticos',
+    'biotecnologia.pdf': 'Biotecnologia',
+    'clima-e-ecossistemas.pdf': 'Clima e ecossistemas',
+    'clima-esta-a-mudar.pdf': 'O clima está a mudar',
+    'construir-ninhos.pdf': 'Construir ninhos',
+    'descobrindo-o-litoral.pdf': 'Descobrindo o litoral',
+    'diversidade-da-vida.pdf': 'Diversidade da vida',
+    'ecossistemas.pdf': 'Ecossistemas',
+    'escola-ecologica.pdf': 'Escola ecológica',
+    'estrutura-das-plantas.pdf': 'Estrutura das plantas',
+    'fazer-um-charco.pdf': 'Fazer um charco',
+    'floresta-na-escola.pdf': 'Floresta na escola',
+    'fontes-energeticas.pdf': 'Fontes energéticas',
+    'golfinhos-do-sado.pdf': 'Golfinhos do Sado',
+    'homem-e-biodiversidade.pdf': 'Homem e biodiversidade',
+    'inspeccoes-costeiras.pdf': 'Inspecções costeiras',
+    'o-lobo.pdf': 'O lobo',
+    'poluicao-do-ar.pdf': 'Poluição do ar',
+    'predacao-e-mimetismo.pdf': 'Predação e mimetismo',
+    'residuos-e-reciclagem.pdf': 'Resíduos e reciclagem',
+    'sabias-que-natureza.pdf': 'Sabias que… (natureza)',
+    'sabias-que-reciclagem.pdf': 'Sabias que… (reciclagem)',
+    'salvar-os-oceanos.pdf': 'Salvar os oceanos',
+    'solo-e-rochas.pdf': 'Solo e rochas',
+    'vida-em-perigo.pdf': 'Vida em perigo',
+    'vida-nas-cidades-cont.pdf': 'Vida nas cidades (cont.)',
+    'vida-nas-cidades.pdf': 'Vida nas cidades',
+}
+
+escolares_files = sorted(
+    [f for f in os.listdir(ESCOLARES_DIR) if f.endswith('.pdf') and f not in ESCOLARES_EXCLUDE],
+    key=lambda f: ESCOLARES_TITLES.get(f, f).lower()
+)
+escolares_section = '    <section id="escolares">\n'
+escolares_section += '      <h2>Textos Escolares</h2>\n'
+escolares_section += '      <ol class="publications">\n'
+for f in escolares_files:
+    title = ESCOLARES_TITLES.get(f, f.replace('-', ' ').replace('.pdf', '').title())
+    href = f'pdfs/Porto Editora/{f}'
+    escolares_section += f'        <li>{title} <a href="{href}" class="pdf-link" title="Descarregar PDF" target="_blank">PDF</a></li>\n'
+escolares_section += '      </ol>\n'
+escolares_section += '    </section>\n\n'
+escritos_sections += escolares_section
+
 toc_pills = '\n'.join([f'        <a href="#{sec["id"]}">{sec.get("nav_label", sec["label"])}</a>' for sec in top_sections if sum(len(s[1]) for s in sec['subs']) > 0])
-total_items = sum(sum(len(s[1]) for s in sec['subs']) for sec in top_sections)
+toc_pills += '\n        <a href="#escolares">Escolares</a>'
+total_items = sum(sum(len(s[1]) for s in sec['subs']) for sec in top_sections) + len(escolares_files)
 
 escritos_html = f'''<!DOCTYPE html>
 <html lang="pt">
