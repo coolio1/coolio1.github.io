@@ -227,7 +227,7 @@ def categorize(item):
     atts = ' '.join(item.get('attachments', []))
 
     # Trabalhos universitários
-    UNIVERSITY_IDS = {49, 76, 165}
+    UNIVERSITY_IDS = {49, 76, 165, 255, 256, 257}
     if item.get('itemID') in UNIVERSITY_IDS:
         return 'universitario'
     if typ == 'thesis':
