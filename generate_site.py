@@ -77,6 +77,14 @@ def format_apa(item):
 
     year_str = f'({year})' if year else '(s.d.)'
 
+    institution = item.get('institution') or ''
+    conf = item.get('conferenceName') or ''
+    proc = item.get('proceedingsTitle') or ''
+    isbn = item.get('ISBN') or ''
+    issn = item.get('ISSN') or ''
+    university = item.get('university') or ''
+    thesis_type = item.get('thesisType') or ''
+
     if typ == 'journalArticle':
         ref = f'{authors} {year_str}. {title}.'
         if pub:
@@ -114,23 +122,63 @@ def format_apa(item):
             ref += '.'
     elif typ == 'thesis':
         ref = f'{authors} {year_str}. <em>{title}</em>'
-        if publisher:
-            ref += f' [{publisher}]'
+        if thesis_type:
+            ref += f' [{thesis_type}]'
         ref += '.'
+        if university:
+            ref += f' {university}'
+        if place:
+            ref += f', {place}'
+        if (university or place) and not ref.endswith('.'):
+            ref += '.'
     elif typ == 'report':
+        editors = [c for c in item.get('creators', []) if c['type'] == 'editor']
         ref = f'{authors} {year_str}. <em>{title}</em>.'
-        if publisher:
+        if editors:
+            ed_parts = [f"{e['first'][0]}. {e['last']}" if e['first'] else e['last'] for e in editors]
+            ed_str = ', '.join(ed_parts)
+            ref += f' Coordenação de {ed_str}.'
+        if institution:
+            ref += f' {institution}'
+        elif publisher:
             ref += f' {publisher}'
         if place:
             ref += f', {place}'
-        if (publisher or place) and not ref.endswith('.'):
+        if (institution or publisher or place) and not ref.endswith('.'):
             ref += '.'
     elif typ in ('newspaperArticle', 'magazineArticle'):
         ref = f'{authors} {year_str}. {title}.'
         if pub:
-            ref += f' <em>{pub}</em>.'
+            ref += f' <em>{pub}</em>'
+            if vol:
+                ref += f', <em>{vol}</em>'
+            if iss:
+                ref += f'({iss})'
+            if pages:
+                ref += f', {pages}'
+            ref += '.'
+        else:
+            pass  # no pub
     elif typ == 'conferencePaper':
         ref = f'{authors} {year_str}. {title}.'
+        if proc:
+            ref += f' Em <em>{proc}</em>'
+            if pages:
+                ref += f' (pp. {pages})'
+            ref += '.'
+        elif conf:
+            ref += f' <em>{conf}</em>'
+            if place:
+                ref += f', {place}'
+            if pages:
+                ref += f' (pp. {pages})'
+            ref += '.'
+        if publisher and not proc:
+            ref += f' {publisher}'
+            if not ref.endswith('.'):
+                ref += '.'
+        if isbn:
+            ref += f' ISBN {isbn}.'
     else:
         ref = f'{authors} {year_str}. {title}.'
 
