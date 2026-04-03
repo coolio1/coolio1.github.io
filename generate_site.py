@@ -525,6 +525,7 @@ escritos_html = f'''<!DOCTYPE html>
       <div class="nav-links">
         <a href="index.html">Início</a>
         <a href="escritos.html" class="active">Publicações</a>
+        <a href="activismo.html">Activismo</a>
         <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/" target="_blank">Porto Verde</a>
       </div>
     </nav>
@@ -621,6 +622,7 @@ index_html = f'''<!DOCTYPE html>
       <div class="nav-links">
         <a href="index.html">Início</a>
         <a href="escritos.html">Publicações</a>
+        <a href="activismo.html">Activismo</a>
         <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/" target="_blank">Porto Verde</a>
       </div>
     </nav>
