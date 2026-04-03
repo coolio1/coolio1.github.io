@@ -310,6 +310,7 @@ top_sections = [
     {
         'id': 'trabalhos',
         'label': 'Relatórios e Trabalhos',
+        'nav_label': 'Relatórios',
         'subs': [('', categories.get('trabalhos', []))],
     },
     {
@@ -330,6 +331,7 @@ top_sections = [
     {
         'id': 'universitario',
         'label': 'Trabalhos Universitários',
+        'nav_label': 'Universidade',
         'subs': [('', categories.get('universitario', []))],
     },
 ]
@@ -408,7 +410,7 @@ for sec in top_sections:
         escritos_sections += f'      </ol>\n'
     escritos_sections += f'    </section>\n\n'
 
-toc_pills = '\n'.join([f'        <a href="#{sec["id"]}">{sec["label"]}</a>' for sec in top_sections if sum(len(s[1]) for s in sec['subs']) > 0])
+toc_pills = '\n'.join([f'        <a href="#{sec["id"]}">{sec.get("nav_label", sec["label"])}</a>' for sec in top_sections if sum(len(s[1]) for s in sec['subs']) > 0])
 total_items = sum(sum(len(s[1]) for s in sec['subs']) for sec in top_sections)
 
 escritos_html = f'''<!DOCTYPE html>
