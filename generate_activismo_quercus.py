@@ -261,9 +261,22 @@ for theme in THEME_ORDER:
     sections_html += "    </section>\n\n"
 
 # --- Pages sections (Ecografia, Barrinha, Rio Tinto) ---
+# Barrinha: exclude the 2 huge broken reports (>20k), use PDF instead
+BARRINHA_PDF = "pdfs/Voluntariado/Quercus/Barrinha de Esmoriz, por uma boa causa.pdf"
+BARRINHA_EXCLUDE_TITLES = {"A - CARACTERIZAÇÃO GEOGRÁFICA", "por uma boa causa"}
+# Also exclude index-like pages (Poster, Mapas, Relatório)
+BARRINHA_EXCLUDE_KEYWORDS = {"Poster", "Mapas", "Relatório"}
+
 for sec_name in ["Ecografia", "Barrinha de Esmoriz", "Rio Tinto"]:
     sec_items = [p for p in paginas if p.get("section") == sec_name]
     sec_items = [p for p in sec_items if len(p.get("html", "")) > 200]
+    if sec_name == "Barrinha de Esmoriz":
+        sec_items = [
+            p
+            for p in sec_items
+            if p.get("title", "") not in BARRINHA_EXCLUDE_TITLES
+            and not any(kw in p.get("title", "") for kw in BARRINHA_EXCLUDE_KEYWORDS)
+        ]
     if not sec_items:
         continue
     sec_items.sort(key=lambda x: x.get("title", ""))
@@ -271,6 +284,10 @@ for sec_name in ["Ecografia", "Barrinha de Esmoriz", "Rio Tinto"]:
     section_id = sec_name.lower().replace(" ", "-").replace("í", "i")
     sections_html += f'    <section id="{section_id}">\n'
     sections_html += f'      <h2>{sec_name} <span class="section-count">{len(sec_items)}</span></h2>\n'
+
+    # Add Barrinha PDF link
+    if sec_name == "Barrinha de Esmoriz":
+        sections_html += f'      <p style="margin-bottom:1.2rem; font-size:0.92rem; color:var(--ink-light);">Relatório de 1995: <em>Barrinha de Esmoriz / Lagoa de Paramos: por uma boa causa</em> <a href="{BARRINHA_PDF}" class="pdf-link" title="Descarregar PDF" target="_blank">PDF</a></p>\n'
 
     for item in sec_items:
         raw_title = item.get("title", "Sem título")
