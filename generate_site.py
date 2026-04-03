@@ -226,12 +226,14 @@ def categorize(item):
     # Use attachment paths to help categorize
     atts = ' '.join(item.get('attachments', []))
 
+    # Trabalhos universitários
+    UNIVERSITY_IDS = {49, 76, 165}
+    if item.get('itemID') in UNIVERSITY_IDS:
+        return 'universitario'
     if typ == 'thesis':
         if item.get('itemID') == 81:  # Spectral study = tese licenciatura
             return 'tese_lic'
         return 'tese'
-    elif item.get('itemID') == 165:  # Avaliação contingente Bom Sucesso -> trabalhos
-        return 'trabalhos'
     elif typ in ('journalArticle', 'bookSection', 'conferencePaper'):
         return 'cientifico'
     elif typ == 'report' or typ == 'magazineArticle':
@@ -263,6 +265,7 @@ categories = {
     'tese': [],
     'tese_lic': [],
     'cientifico': [],
+    'universitario': [],
     'trabalhos': [],
     'op_cidade': [],
     'op_ambiente': [],
@@ -298,6 +301,11 @@ top_sections = [
             ('Doutoramento', categories.get('tese', [])),
             ('Licenciatura', categories.get('tese_lic', [])),
         ]
+    },
+    {
+        'id': 'universitario',
+        'label': 'Trabalhos Universitários',
+        'subs': [('', categories.get('universitario', []))],
     },
     {
         'id': 'cientifico',
@@ -377,7 +385,7 @@ def render_featured(items_list):
     return html
 
 # Sections with covers: trabalhos, teses, cientifico
-SECTIONS_WITH_COVERS = {'teses', 'trabalhos', 'cientifico'}
+SECTIONS_WITH_COVERS = {'teses', 'universitario', 'trabalhos', 'cientifico'}
 # Sections with year markers: opiniao (many items)
 SECTIONS_WITH_YEARS = {'opiniao'}
 
