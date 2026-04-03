@@ -88,13 +88,17 @@ def format_apa(item):
     thesis_type = item.get('thesisType') or ''
 
     if typ == 'journalArticle':
-        ref = f'{authors} {year_str}. {title}.'
+        title_end = '.' if not title.endswith(('?', '!')) else ''
+        ref = f'{authors} {year_str}. {title}{title_end}'
         if pub:
             ref += f' <em>{pub}</em>'
             if vol:
                 ref += f', <em>{vol}</em>'
             if iss:
-                ref += f'({iss})'
+                if vol:
+                    ref += f'({iss})'
+                else:
+                    ref += f' ({iss})'
             if pages:
                 ref += f', {pages}'
             ref += '.'
@@ -149,20 +153,25 @@ def format_apa(item):
         if (institution or publisher or place) and not ref.endswith('.'):
             ref += '.'
     elif typ in ('newspaperArticle', 'magazineArticle'):
-        ref = f'{authors} {year_str}. {title}.'
+        title_end = '.' if not title.endswith(('?', '!')) else ''
+        ref = f'{authors} {year_str}. {title}{title_end}'
         if pub:
             ref += f' <em>{pub}</em>'
             if vol:
                 ref += f', <em>{vol}</em>'
             if iss:
-                ref += f'({iss})'
+                if vol:
+                    ref += f'({iss})'
+                else:
+                    ref += f' ({iss})'
             if pages:
                 ref += f', {pages}'
             ref += '.'
         else:
             pass  # no pub
     elif typ == 'conferencePaper':
-        ref = f'{authors} {year_str}. {title}.'
+        title_end = '.' if not title.endswith(('?', '!')) else ''
+        ref = f'{authors} {year_str}. {title}{title_end}'
         if proc:
             ref += f' Em <em>{proc}</em>'
             if pages:
@@ -182,7 +191,8 @@ def format_apa(item):
         if isbn:
             ref += f' ISBN {isbn}.'
     else:
-        ref = f'{authors} {year_str}. {title}.'
+        title_end = '.' if not title.endswith(('?', '!')) else ''
+        ref = f'{authors} {year_str}. {title}{title_end}'
 
     return ref
 
