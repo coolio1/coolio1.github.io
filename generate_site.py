@@ -30,6 +30,8 @@ for item in items:
         EXCLUDE_IDS.add(item['itemID'])
     if item['itemID'] == 229:  # Terraços - Livro Rio Fernandes
         EXCLUDE_IDS.add(item['itemID'])
+    if item['itemID'] == 246:  # A envolvente da Casa da Música - duplicado de "A Casa em debate" (ID=167)
+        EXCLUDE_IDS.add(item['itemID'])
 
 items = [i for i in items if i['itemID'] not in EXCLUDE_IDS]
 
