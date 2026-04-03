@@ -90,6 +90,18 @@ def text_to_html(text):
 
 # --- Large items threshold ---
 LARGE_THRESHOLD = 15000
+PDF_DIR = 'pdfs/Voluntariado/Quercus'
+
+def get_pdf_href(item):
+    """Find matching PDF for a large item."""
+    title = item['title']
+    date = item.get('date', '')
+    safe_title = re.sub(r'[<>:"/\\|?*]', '', title)[:80].strip()
+    pdf_name = f'{date} - {safe_title}.pdf'
+    pdf_path = os.path.join(SITE, PDF_DIR, pdf_name)
+    if os.path.exists(pdf_path):
+        return f'{PDF_DIR}/{pdf_name}'
+    return None
 
 # --- Build sections ---
 sections_html = ''
@@ -113,30 +125,19 @@ for theme in THEME_ORDER:
         nchars = len(text)
         total_items += 1
 
-        if nchars > LARGE_THRESHOLD:
-            # Large item - just show title (PDF to be added later)
-            sections_html += f'      <details class="texto-item">\n'
-            sections_html += f'        <summary class="texto-header">\n'
-            sections_html += f'          <span class="texto-date">{date}</span>\n'
-            sections_html += f'          <span class="texto-title">{title}</span>\n'
-            sections_html += f'        </summary>\n'
-            sections_html += f'        <div class="texto-body">\n'
-            sections_html += text_to_html(text)
-            sections_html += f'\n        </div>\n'
-            sections_html += f'      </details>\n'
-            total_embedded += 1
-        else:
-            # Embedded text
-            sections_html += f'      <details class="texto-item">\n'
-            sections_html += f'        <summary class="texto-header">\n'
-            sections_html += f'          <span class="texto-date">{date}</span>\n'
-            sections_html += f'          <span class="texto-title">{title}</span>\n'
-            sections_html += f'        </summary>\n'
-            sections_html += f'        <div class="texto-body">\n'
-            sections_html += text_to_html(text)
-            sections_html += f'\n        </div>\n'
-            sections_html += f'      </details>\n'
-            total_embedded += 1
+        pdf_href = get_pdf_href(item) if nchars > LARGE_THRESHOLD else None
+        pdf_badge = f' <a href="{pdf_href}" class="pdf-link" title="Descarregar PDF" target="_blank">PDF</a>' if pdf_href else ''
+
+        sections_html += f'      <details class="texto-item">\n'
+        sections_html += f'        <summary class="texto-header">\n'
+        sections_html += f'          <span class="texto-date">{date}</span>\n'
+        sections_html += f'          <span class="texto-title">{title}{pdf_badge}</span>\n'
+        sections_html += f'        </summary>\n'
+        sections_html += f'        <div class="texto-body">\n'
+        sections_html += text_to_html(text)
+        sections_html += f'\n        </div>\n'
+        sections_html += f'      </details>\n'
+        total_embedded += 1
 
     sections_html += f'    </section>\n\n'
 
@@ -154,22 +155,33 @@ for sec_name in ['Ecografia', 'Barrinha de Esmoriz', 'Rio Tinto']:
     sections_html += f'      <h2>{sec_name} <span class="section-count">{len(sec_items)}</span></h2>\n'
 
     for item in sec_items:
-        title = html.escape(item.get('title', 'Sem título'))
+        raw_title = item.get('title', 'Sem título')
+        title = html.escape(raw_title)
         # Clean up long prefixed titles
         title = re.sub(r'^(Áreas Naturais|Problemas ambientais)\s*»\s*', '', title)
         title = re.sub(r'^(Barrinha de Esmoriz|Rio Tinto entubado|Ecografia)\s*»?\s*', '', title)
         if not title:
-            title = item.get('title', 'Sem título')
+            title = html.escape(raw_title)
         date = item.get('date', '')
         text = item['text']
+        nchars = len(text)
         total_items += 1
         total_embedded += 1
+
+        # Check for PDF (large Barrinha pages)
+        pdf_badge = ''
+        if nchars > LARGE_THRESHOLD:
+            safe_t = re.sub(r'[<>:"/\\|?*]', '', raw_title)[:60].strip()
+            pdf_name = f'Barrinha de Esmoriz - {safe_t}.pdf'
+            pdf_path = os.path.join(SITE, PDF_DIR, pdf_name)
+            if os.path.exists(pdf_path):
+                pdf_badge = f' <a href="{PDF_DIR}/{pdf_name}" class="pdf-link" title="Descarregar PDF" target="_blank">PDF</a>'
 
         sections_html += f'      <details class="texto-item">\n'
         sections_html += f'        <summary class="texto-header">\n'
         if date:
             sections_html += f'          <span class="texto-date">{date}</span>\n'
-        sections_html += f'          <span class="texto-title">{html.escape(title)}</span>\n'
+        sections_html += f'          <span class="texto-title">{title}{pdf_badge}</span>\n'
         sections_html += f'        </summary>\n'
         sections_html += f'        <div class="texto-body">\n'
         sections_html += text_to_html(text)
