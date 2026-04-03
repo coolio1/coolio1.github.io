@@ -303,11 +303,6 @@ top_sections = [
         ]
     },
     {
-        'id': 'universitario',
-        'label': 'Trabalhos Universitários',
-        'subs': [('', categories.get('universitario', []))],
-    },
-    {
         'id': 'cientifico',
         'label': 'Artigos Científicos',
         'subs': [('', categories.get('cientifico', []))],
@@ -331,6 +326,11 @@ top_sections = [
         'id': 'policiario',
         'label': 'Ficção Policial',
         'subs': [('', categories.get('policiario', []))],
+    },
+    {
+        'id': 'universitario',
+        'label': 'Trabalhos Universitários',
+        'subs': [('', categories.get('universitario', []))],
     },
 ]
 
