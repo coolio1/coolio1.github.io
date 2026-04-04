@@ -1,287 +1,337 @@
 """Generate the full academic portfolio site from Zotero export data."""
-import sys, io, os, json, re
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-EXPORT = r'C:\Users\quent\Zotero\export.json'
-SITE = r'C:\Users\quent\Downloads\Claude\CV'
-PDFS_DIR = os.path.join(SITE, 'pdfs')
+import sys
+import io
+import os
+import json
+import re
 
-with open(EXPORT, 'r', encoding='utf-8') as f:
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+
+EXPORT = r"C:\Users\quent\Zotero\export.json"
+SITE = r"C:\Users\quent\Downloads\Claude\CV"
+PDFS_DIR = os.path.join(SITE, "pdfs")
+
+with open(EXPORT, "r", encoding="utf-8") as f:
     items = json.load(f)
 
 # Fix missing dates in Zotero export
 DATE_OVERRIDES = {
-    55: '2009',    # Naturbanization
-    97: '2015',    # Changing the future of energy
-    99: '2006',    # Plano Estratégico Ponte da Barca
-    96: '2003',    # Portuguese environmental policy (conference)
+    55: "2009",  # Naturbanization
+    97: "2015",  # Changing the future of energy
+    99: "2006",  # Plano Estratégico Ponte da Barca
+    96: "2003",  # Portuguese environmental policy (conference)
 }
 for item in items:
-    if item['itemID'] in DATE_OVERRIDES and not item.get('date'):
-        item['date'] = DATE_OVERRIDES[item['itemID']]
+    if item["itemID"] in DATE_OVERRIDES and not item.get("date"):
+        item["date"] = DATE_OVERRIDES[item["itemID"]]
 
 # Exclude Carta policiario and Acknowledgement to Reviewers
 EXCLUDE_IDS = set()
 for item in items:
-    t = (item.get('title') or '').lower()
-    if 'carta' in t and 'polici' in t:
-        EXCLUDE_IDS.add(item['itemID'])
-    if 'acknowledgement to reviewers' in t.lower() or 'agradecimento aos reviewers' in t.lower():
-        EXCLUDE_IDS.add(item['itemID'])
-    if item['itemID'] == 229:  # Terraços - Livro Rio Fernandes
-        EXCLUDE_IDS.add(item['itemID'])
-    if item['itemID'] == 246:  # A envolvente da Casa da Música - duplicado de "A Casa em debate" (ID=167)
-        EXCLUDE_IDS.add(item['itemID'])
+    t = (item.get("title") or "").lower()
+    if "carta" in t and "polici" in t:
+        EXCLUDE_IDS.add(item["itemID"])
+    if (
+        "acknowledgement to reviewers" in t.lower()
+        or "agradecimento aos reviewers" in t.lower()
+    ):
+        EXCLUDE_IDS.add(item["itemID"])
+    if item["itemID"] == 229:  # Terraços - Livro Rio Fernandes
+        EXCLUDE_IDS.add(item["itemID"])
+    if (
+        item["itemID"] == 246
+    ):  # A envolvente da Casa da Música - duplicado de "A Casa em debate" (ID=167)
+        EXCLUDE_IDS.add(item["itemID"])
 
-items = [i for i in items if i['itemID'] not in EXCLUDE_IDS]
+items = [i for i in items if i["itemID"] not in EXCLUDE_IDS]
+
 
 def extract_year(date_str):
     if not date_str:
-        return ''
-    m = re.search(r'(\d{4})', date_str)
-    return m.group(1) if m else ''
+        return ""
+    m = re.search(r"(\d{4})", date_str)
+    return m.group(1) if m else ""
+
 
 def format_authors_apa(creators):
     """Format authors in APA 7 style."""
-    authors = [c for c in creators if c['type'] == 'author']
+    authors = [c for c in creators if c["type"] == "author"]
     if not authors:
-        return ''
+        return ""
     parts = []
     for a in authors:
-        last = a['last']
-        first = a['first']
+        last = a["last"]
+        first = a["first"]
         if not first:  # Institutional author
             parts.append(last)
         else:
-            initials = ' '.join([n[0] + '.' for n in first.split() if n])
-            parts.append(f'{last}, {initials}')
+            initials = " ".join([n[0] + "." for n in first.split() if n])
+            parts.append(f"{last}, {initials}")
     if len(parts) == 1:
         return parts[0]
     elif len(parts) == 2:
-        return f'{parts[0]} & {parts[1]}'
+        return f"{parts[0]} & {parts[1]}"
     else:
-        return ', '.join(parts[:-1]) + ', & ' + parts[-1]
+        return ", ".join(parts[:-1]) + ", & " + parts[-1]
+
 
 def format_apa(item):
     """Generate APA 7 citation."""
-    authors = format_authors_apa(item.get('creators', []))
-    year = extract_year(item.get('date'))
-    title = item.get('title', '')
-    typ = item.get('typeName', '')
-    pub = item.get('publicationTitle') or ''
-    book = item.get('bookTitle') or ''
-    vol = item.get('volume') or ''
-    iss = item.get('issue') or ''
-    pages = item.get('pages') or ''
-    doi = item.get('doi') or ''
-    publisher = item.get('publisher') or ''
-    place = item.get('place') or ''
+    authors = format_authors_apa(item.get("creators", []))
+    year = extract_year(item.get("date"))
+    title = item.get("title", "")
+    typ = item.get("typeName", "")
+    pub = item.get("publicationTitle") or ""
+    book = item.get("bookTitle") or ""
+    vol = item.get("volume") or ""
+    iss = item.get("issue") or ""
+    pages = item.get("pages") or ""
+    doi = item.get("doi") or ""
+    publisher = item.get("publisher") or ""
+    place = item.get("place") or ""
 
-    year_str = f'({year})' if year else '(s.d.)'
+    year_str = f"({year})" if year else "(s.d.)"
 
-    institution = item.get('institution') or ''
-    conf = item.get('conferenceName') or ''
-    proc = item.get('proceedingsTitle') or ''
-    isbn = item.get('ISBN') or ''
-    issn = item.get('ISSN') or ''
-    university = item.get('university') or ''
-    thesis_type = item.get('thesisType') or ''
+    institution = item.get("institution") or ""
+    conf = item.get("conferenceName") or ""
+    proc = item.get("proceedingsTitle") or ""
+    isbn = item.get("ISBN") or ""
+    issn = item.get("ISSN") or ""
+    university = item.get("university") or ""
+    thesis_type = item.get("thesisType") or ""
 
-    if typ == 'journalArticle':
-        title_end = '.' if not title.endswith(('?', '!')) else ''
-        ref = f'{authors} {year_str}. {title}{title_end}'
+    if typ == "journalArticle":
+        title_end = "." if not title.endswith(("?", "!")) else ""
+        ref = f"{authors} {year_str}. {title}{title_end}"
         if pub:
-            ref += f' <em>{pub}</em>'
+            ref += f" <em>{pub}</em>"
             if vol:
-                ref += f', <em>{vol}</em>'
+                ref += f", <em>{vol}</em>"
             if iss:
                 if vol:
-                    ref += f'({iss})'
+                    ref += f"({iss})"
                 else:
-                    ref += f' ({iss})'
+                    ref += f" ({iss})"
             if pages:
-                ref += f', {pages}'
-            ref += '.'
+                ref += f", {pages}"
+            ref += "."
         if doi:
-            doi_url = f'https://doi.org/{doi}'
+            doi_url = f"https://doi.org/{doi}"
             ref += f' <a href="{doi_url}" target="_blank">{doi_url}</a>'
-    elif typ == 'bookSection':
-        editors = [c for c in item.get('creators', []) if c['type'] == 'editor']
-        ed_str = ''
+    elif typ == "bookSection":
+        editors = [c for c in item.get("creators", []) if c["type"] == "editor"]
+        ed_str = ""
         if editors:
-            ed_parts = [f"{e['first'][0]}. {e['last']}" if e['first'] else e['last'] for e in editors]
-            ed_str = ', '.join(ed_parts)
-            ed_str = f' Em {ed_str} (Ed.),'
+            ed_parts = [
+                f"{e['first'][0]}. {e['last']}" if e["first"] else e["last"]
+                for e in editors
+            ]
+            ed_str = ", ".join(ed_parts)
+            ed_str = f" Em {ed_str} (Ed.),"
         # Avoid double period if title already ends with punctuation
-        title_end = '.' if not title.endswith(('.', '?', '!')) else ''
-        ref = f'{authors} {year_str}. {title}{title_end}{ed_str}'
+        title_end = "." if not title.endswith((".", "?", "!")) else ""
+        ref = f"{authors} {year_str}. {title}{title_end}{ed_str}"
         if book:
-            ref += f' <em>{book}</em>'
+            ref += f" <em>{book}</em>"
         if pages:
-            ref += f' (pp. {pages})'
-        ref += '.'
+            ref += f" (pp. {pages})"
+        ref += "."
         if publisher:
-            ref += f' {publisher}'
+            ref += f" {publisher}"
         if place:
-            ref += f', {place}'
-        if (publisher or place) and not ref.endswith('.'):
-            ref += '.'
-    elif typ == 'thesis':
-        ref = f'{authors} {year_str}. <em>{title}</em>'
+            ref += f", {place}"
+        if (publisher or place) and not ref.endswith("."):
+            ref += "."
+    elif typ == "thesis":
+        ref = f"{authors} {year_str}. <em>{title}</em>"
         if thesis_type:
-            ref += f' [{thesis_type}]'
-        ref += '.'
+            ref += f" [{thesis_type}]"
+        ref += "."
         if university:
-            ref += f' {university}'
+            ref += f" {university}"
         if place:
-            ref += f', {place}'
-        if (university or place) and not ref.endswith('.'):
-            ref += '.'
-    elif typ == 'report':
-        editors = [c for c in item.get('creators', []) if c['type'] == 'editor']
-        ref = f'{authors} {year_str}. <em>{title}</em>.'
+            ref += f", {place}"
+        if (university or place) and not ref.endswith("."):
+            ref += "."
+    elif typ == "report":
+        editors = [c for c in item.get("creators", []) if c["type"] == "editor"]
+        ref = f"{authors} {year_str}. <em>{title}</em>."
         if editors:
-            ed_parts = [f"{e['first'][0]}. {e['last']}" if e['first'] else e['last'] for e in editors]
-            ed_str = ', '.join(ed_parts)
-            ref += f' Coordenação de {ed_str}.'
+            ed_parts = [
+                f"{e['first'][0]}. {e['last']}" if e["first"] else e["last"]
+                for e in editors
+            ]
+            ed_str = ", ".join(ed_parts)
+            ref += f" Coordenação de {ed_str}."
         if institution:
-            ref += f' {institution}'
+            ref += f" {institution}"
         elif publisher:
-            ref += f' {publisher}'
+            ref += f" {publisher}"
         if place:
-            ref += f', {place}'
-        if (institution or publisher or place) and not ref.endswith('.'):
-            ref += '.'
-    elif typ in ('newspaperArticle', 'magazineArticle'):
-        title_end = '.' if not title.endswith(('?', '!')) else ''
-        ref = f'{authors} {year_str}. {title}{title_end}'
+            ref += f", {place}"
+        if (institution or publisher or place) and not ref.endswith("."):
+            ref += "."
+    elif typ in ("newspaperArticle", "magazineArticle"):
+        title_end = "." if not title.endswith(("?", "!")) else ""
+        ref = f"{authors} {year_str}. {title}{title_end}"
         if pub:
-            ref += f' <em>{pub}</em>'
+            ref += f" <em>{pub}</em>"
             if vol:
-                ref += f', <em>{vol}</em>'
+                ref += f", <em>{vol}</em>"
             if iss:
                 if vol:
-                    ref += f'({iss})'
+                    ref += f"({iss})"
                 else:
-                    ref += f' ({iss})'
+                    ref += f" ({iss})"
             if pages:
-                ref += f', {pages}'
-            ref += '.'
+                ref += f", {pages}"
+            ref += "."
         else:
             pass  # no pub
-    elif typ == 'conferencePaper':
-        title_end = '.' if not title.endswith(('?', '!')) else ''
-        ref = f'{authors} {year_str}. {title}{title_end}'
+    elif typ == "conferencePaper":
+        title_end = "." if not title.endswith(("?", "!")) else ""
+        ref = f"{authors} {year_str}. {title}{title_end}"
         if proc:
-            ref += f' Em <em>{proc}</em>'
+            ref += f" Em <em>{proc}</em>"
             if pages:
-                ref += f' (pp. {pages})'
-            ref += '.'
+                ref += f" (pp. {pages})"
+            ref += "."
         elif conf:
-            ref += f' <em>{conf}</em>'
+            ref += f" <em>{conf}</em>"
             if place:
-                ref += f', {place}'
+                ref += f", {place}"
             if pages:
-                ref += f' (pp. {pages})'
-            ref += '.'
+                ref += f" (pp. {pages})"
+            ref += "."
         if publisher and not proc:
-            ref += f' {publisher}'
-            if not ref.endswith('.'):
-                ref += '.'
+            ref += f" {publisher}"
+            if not ref.endswith("."):
+                ref += "."
         if isbn:
-            ref += f' ISBN {isbn}.'
+            ref += f" ISBN {isbn}."
     else:
-        title_end = '.' if not title.endswith(('?', '!')) else ''
-        ref = f'{authors} {year_str}. {title}{title_end}'
+        title_end = "." if not title.endswith(("?", "!")) else ""
+        ref = f"{authors} {year_str}. {title}{title_end}"
 
     return ref
 
-COVERS_DIR = os.path.join(SITE, 'covers')
+
+COVERS_DIR = os.path.join(SITE, "covers")
+
 
 def get_cover_filename(item):
     """Find cover image for this item."""
     import unicodedata
-    for att in item.get('attachments', []):
+
+    for att in item.get("attachments", []):
         basename = os.path.basename(att)
-        jpg_name = os.path.splitext(basename)[0] + '.jpg'
+        jpg_name = os.path.splitext(basename)[0] + ".jpg"
         if os.path.exists(os.path.join(COVERS_DIR, jpg_name)):
             return jpg_name
-        ascii_name = unicodedata.normalize('NFD', jpg_name).encode('ascii', 'ignore').decode()
+        ascii_name = (
+            unicodedata.normalize("NFD", jpg_name).encode("ascii", "ignore").decode()
+        )
         if os.path.exists(os.path.join(COVERS_DIR, ascii_name)):
             return ascii_name
     return None
 
+
 def get_pdf_filename(item):
     """Find the PDF filename for this item in pdfs/ dir."""
     import unicodedata
-    for att in item.get('attachments', []):
+
+    for att in item.get("attachments", []):
         basename = os.path.basename(att)
-        pdf_name = os.path.splitext(basename)[0] + '.pdf'
+        pdf_name = os.path.splitext(basename)[0] + ".pdf"
         # Try exact match
         if os.path.exists(os.path.join(PDFS_DIR, pdf_name)):
             return pdf_name
         if os.path.exists(os.path.join(PDFS_DIR, basename)):
             return basename
         # Try ASCII-normalized version (e.g. Terraços -> Terracos)
-        ascii_name = unicodedata.normalize('NFD', pdf_name).encode('ascii', 'ignore').decode()
+        ascii_name = (
+            unicodedata.normalize("NFD", pdf_name).encode("ascii", "ignore").decode()
+        )
         if os.path.exists(os.path.join(PDFS_DIR, ascii_name)):
             return ascii_name
     return None
 
+
 def categorize(item):
-    typ = item.get('typeName', '')
-    title = (item.get('title') or '').lower()
-    pub = (item.get('publicationTitle') or '').lower()
+    typ = item.get("typeName", "")
+    title = (item.get("title") or "").lower()
+    pub = (item.get("publicationTitle") or "").lower()
 
     # Use attachment paths to help categorize
-    atts = ' '.join(item.get('attachments', []))
+    atts = " ".join(item.get("attachments", []))
 
     # Trabalhos universitários
     UNIVERSITY_IDS = {49, 76, 165, 255, 256, 257}
-    if item.get('itemID') in UNIVERSITY_IDS:
-        return 'universitario'
-    if typ == 'thesis':
-        if item.get('itemID') == 81:  # Spectral study = tese licenciatura
-            return 'tese_lic'
-        return 'tese'
-    elif typ in ('journalArticle', 'bookSection', 'conferencePaper'):
-        return 'cientifico'
-    elif typ == 'report' or typ == 'magazineArticle':
-        return 'trabalhos'
-    elif typ == 'newspaperArticle':
-        iid = item.get('itemID')
+    if item.get("itemID") in UNIVERSITY_IDS:
+        return "universitario"
+    if typ == "thesis":
+        if item.get("itemID") == 81:  # Spectral study = tese licenciatura
+            return "tese_lic"
+        return "tese"
+    elif typ in ("journalArticle", "bookSection", "conferencePaper"):
+        return "cientifico"
+    elif typ == "report" or typ == "magazineArticle":
+        return "trabalhos"
+    elif typ == "newspaperArticle":
+        iid = item.get("itemID")
         # Policiário
-        if 'polici' in title or 'inspector' in title or '4 faces' in title:
-            return 'policiario'
+        if "polici" in title or "inspector" in title or "4 faces" in title:
+            return "policiario"
         # COVID
-        if 'COVID' in atts or 'covid' in title:
-            return 'op_covid'
+        if "COVID" in atts or "covid" in title:
+            return "op_covid"
         # Mobilidade e Transportes
         MOBILITY_IDS = {178, 172, 164, 202, 204}
         if iid in MOBILITY_IDS:
-            return 'op_mobilidade'
+            return "op_mobilidade"
         # Cidade, Urbanismo e Espaços Verdes
-        CITY_IDS = {182, 177, 168, 167, 166, 185, 162, 161, 190, 188, 184,
-                    163, 174, 205, 201, 173, 181, 246, 248}
+        CITY_IDS = {
+            182,
+            177,
+            168,
+            167,
+            166,
+            185,
+            162,
+            161,
+            190,
+            188,
+            184,
+            163,
+            174,
+            205,
+            201,
+            173,
+            181,
+            246,
+            248,
+        }
         if iid in CITY_IDS:
-            return 'op_cidade'
+            return "op_cidade"
         # Ambiente e Sustentabilidade (tudo o resto)
-        return 'op_ambiente'
+        return "op_ambiente"
     else:
-        return 'outros'
+        return "outros"
+
 
 # Categorize all items
 categories = {
-    'tese': [],
-    'tese_lic': [],
-    'cientifico': [],
-    'universitario': [],
-    'trabalhos': [],
-    'op_cidade': [],
-    'op_ambiente': [],
-    'op_mobilidade': [],
-    'op_covid': [],
-    'policiario': [],
+    "tese": [],
+    "tese_lic": [],
+    "cientifico": [],
+    "universitario": [],
+    "trabalhos": [],
+    "op_cidade": [],
+    "op_ambiente": [],
+    "op_mobilidade": [],
+    "op_covid": [],
+    "policiario": [],
 }
 
 for item in items:
@@ -292,65 +342,68 @@ for item in items:
 
 # Sort each category by year descending
 for cat in categories:
-    categories[cat].sort(key=lambda x: extract_year(x.get('date', '')) or '0000', reverse=True)
+    categories[cat].sort(
+        key=lambda x: extract_year(x.get("date", "")) or "0000", reverse=True
+    )
 
 # Count totals
 total = sum(len(v) for v in categories.values())
-print(f'Total items for site: {total}')
+print(f"Total items for site: {total}")
 for cat, items_list in categories.items():
-    print(f'  {cat}: {len(items_list)}')
+    print(f"  {cat}: {len(items_list)}")
 
 # --- Generate escritos.html ---
 
 # Consolidated structure: 5 top-level sections, opinion has subsections
 top_sections = [
     {
-        'id': 'teses',
-        'label': 'Teses',
-        'subs': [
-            ('Doutoramento', categories.get('tese', [])),
-            ('Licenciatura', categories.get('tese_lic', [])),
-        ]
+        "id": "teses",
+        "label": "Teses",
+        "subs": [
+            ("Doutoramento", categories.get("tese", [])),
+            ("Licenciatura", categories.get("tese_lic", [])),
+        ],
     },
     {
-        'id': 'cientifico',
-        'label': 'Artigos Científicos',
-        'subs': [('', categories.get('cientifico', []))],
+        "id": "cientifico",
+        "label": "Artigos Científicos",
+        "subs": [("", categories.get("cientifico", []))],
     },
     {
-        'id': 'trabalhos',
-        'label': 'Relatórios Técnicos',
-        'nav_label': 'Relatórios',
-        'subs': [('', categories.get('trabalhos', []))],
+        "id": "trabalhos",
+        "label": "Relatórios Técnicos",
+        "nav_label": "Relatórios",
+        "subs": [("", categories.get("trabalhos", []))],
     },
     {
-        'id': 'opiniao',
-        'label': 'Artigos de Opinião',
-        'subs': [
-            ('Cidade, Urbanismo e Espaços Verdes', categories.get('op_cidade', [])),
-            ('Ambiente e Sustentabilidade', categories.get('op_ambiente', [])),
-            ('Mobilidade e Transportes', categories.get('op_mobilidade', [])),
-            ('COVID-19', categories.get('op_covid', [])),
-        ]
+        "id": "opiniao",
+        "label": "Artigos de Opinião",
+        "subs": [
+            ("Cidade, Urbanismo e Espaços Verdes", categories.get("op_cidade", [])),
+            ("Ambiente e Sustentabilidade", categories.get("op_ambiente", [])),
+            ("Mobilidade e Transportes", categories.get("op_mobilidade", [])),
+            ("COVID-19", categories.get("op_covid", [])),
+        ],
     },
     {
-        'id': 'policiario',
-        'label': 'Ficção Policial',
-        'subs': [('', categories.get('policiario', []))],
+        "id": "policiario",
+        "label": "Ficção Policial",
+        "subs": [("", categories.get("policiario", []))],
     },
     {
-        'id': 'universitario',
-        'label': 'Trabalhos Universitários',
-        'nav_label': 'Universidade',
-        'subs': [('', categories.get('universitario', []))],
+        "id": "universitario",
+        "label": "Trabalhos Universitários",
+        "nav_label": "Universidade",
+        "subs": [("", categories.get("universitario", []))],
     },
 ]
 
+
 def render_items(items_list, show_covers=False, show_year_markers=False):
-    html = ''
+    html = ""
     last_year = None
     for item in items_list:
-        year = extract_year(item.get('date', ''))
+        year = extract_year(item.get("date", ""))
         # Year separator
         if show_year_markers and year and year != last_year:
             html += f'        <li class="year-marker" aria-hidden="true"><span>{year}</span></li>\n'
@@ -358,33 +411,54 @@ def render_items(items_list, show_covers=False, show_year_markers=False):
         apa = format_apa(item)
         pdf = get_pdf_filename(item)
         cover = get_cover_filename(item) if show_covers else None
-        doi = item.get('doi')
-        url = item.get('url')
-        pdf_badge = f' <a href="pdfs/{pdf}" class="pdf-link" title="Descarregar PDF" target="_blank">PDF</a>' if pdf else ''
-        url_badge = f' <a href="{url}" class="url-link" title="Ver online" target="_blank">URL</a>' if url else ''
+        doi = item.get("doi")
+        url = item.get("url")
+        pdf_badge = (
+            f' <a href="pdfs/{pdf}" class="pdf-link" title="Descarregar PDF" target="_blank">PDF</a>'
+            if pdf
+            else ""
+        )
+        url_badge = (
+            f' <a href="{url}" class="url-link" title="Ver online" target="_blank">URL</a>'
+            if url
+            else ""
+        )
         badges = pdf_badge + url_badge
         if cover and pdf:
             html += f'        <li class="has-cover"><a href="pdfs/{pdf}" target="_blank" class="cover-thumb"><img src="covers/{cover}" alt="" loading="lazy"></a><div>{apa}{badges}</div></li>\n'
         else:
-            html += f'        <li>{apa}{badges}</li>\n'
+            html += f"        <li>{apa}{badges}</li>\n"
     return html
 
+
 # Featured items (destaques)
-FEATURED_IDS = [79, 59, 57, 58, 55, 100]  # Tese, Scientometrics, Env Dev Sust, Sust Dev, Naturbanization, SET Plan
-featured_items = [item for item in items if item['itemID'] in FEATURED_IDS]
-featured_items.sort(key=lambda x: FEATURED_IDS.index(x['itemID']))
+FEATURED_IDS = [
+    79,
+    59,
+    57,
+    58,
+    55,
+    100,
+]  # Tese, Scientometrics, Env Dev Sust, Sust Dev, Naturbanization, SET Plan
+featured_items = [item for item in items if item["itemID"] in FEATURED_IDS]
+featured_items.sort(key=lambda x: FEATURED_IDS.index(x["itemID"]))
+
 
 def render_featured(items_list):
-    html = ''
+    html = ""
     for item in items_list:
-        title = item.get('title', '')
-        year = extract_year(item.get('date', ''))
+        title = item.get("title", "")
+        year = extract_year(item.get("date", ""))
         pdf = get_pdf_filename(item)
         cover = get_cover_filename(item)
-        authors = format_authors_apa(item.get('creators', []))
-        pub = item.get('publicationTitle') or item.get('publisher') or ''
-        link = f'pdfs/{pdf}' if pdf else '#'
-        cover_html = f'<img src="covers/{cover}" alt="" loading="lazy">' if cover else '<div class="no-cover"></div>'
+        authors = format_authors_apa(item.get("creators", []))
+        pub = item.get("publicationTitle") or item.get("publisher") or ""
+        link = f"pdfs/{pdf}" if pdf else "#"
+        cover_html = (
+            f'<img src="covers/{cover}" alt="" loading="lazy">'
+            if cover
+            else '<div class="no-cover"></div>'
+        )
         html += f'''      <a href="{link}" target="_blank" class="featured-card">
         <div class="featured-cover">{cover_html}</div>
         <div class="featured-info">
@@ -396,90 +470,105 @@ def render_featured(items_list):
       </a>\n'''
     return html
 
-# Sections with covers: trabalhos, teses, cientifico
-SECTIONS_WITH_COVERS = {'teses', 'universitario', 'trabalhos', 'cientifico'}
-# Sections with year markers: opiniao (many items)
-SECTIONS_WITH_YEARS = {'opiniao'}
 
-escritos_sections = ''
+# Sections with covers: trabalhos, teses, cientifico
+SECTIONS_WITH_COVERS = {"teses", "universitario", "trabalhos", "cientifico"}
+# Sections with year markers: opiniao (many items)
+SECTIONS_WITH_YEARS = {"opiniao"}
+
+escritos_sections = ""
 for sec in top_sections:
-    total_in_sec = sum(len(s[1]) for s in sec['subs'])
+    total_in_sec = sum(len(s[1]) for s in sec["subs"])
     if total_in_sec == 0:
         continue
-    show_covers = sec['id'] in SECTIONS_WITH_COVERS
-    show_years = sec['id'] in SECTIONS_WITH_YEARS
+    show_covers = sec["id"] in SECTIONS_WITH_COVERS
+    show_years = sec["id"] in SECTIONS_WITH_YEARS
     escritos_sections += f'    <section id="{sec["id"]}">\n'
-    escritos_sections += f'      <h2>{sec["label"]}</h2>\n'
-    for sub_label, sub_items in sec['subs']:
+    escritos_sections += f"      <h2>{sec['label']}</h2>\n"
+    for sub_label, sub_items in sec["subs"]:
         if not sub_items:
             continue
         if sub_label:
-            escritos_sections += f'      <h3>{sub_label}</h3>\n'
-        escritos_sections += f'      <ol class="publications">\n'
-        escritos_sections += render_items(sub_items, show_covers=show_covers, show_year_markers=show_years)
-        escritos_sections += f'      </ol>\n'
-    escritos_sections += f'    </section>\n\n'
+            escritos_sections += f"      <h3>{sub_label}</h3>\n"
+        escritos_sections += '      <ol class="publications">\n'
+        escritos_sections += render_items(
+            sub_items, show_covers=show_covers, show_year_markers=show_years
+        )
+        escritos_sections += "      </ol>\n"
+    escritos_sections += "    </section>\n\n"
 
 # Escolares section (Porto Editora PDFs — not from Zotero)
-ESCOLARES_DIR = os.path.join(PDFS_DIR, 'Porto Editora')
-ESCOLARES_EXCLUDE = {'as-dunas.pdf'}  # superseded by as-dunas-v2.pdf
+ESCOLARES_DIR = os.path.join(PDFS_DIR, "Porto Editora")
+ESCOLARES_EXCLUDE = {"as-dunas.pdf"}  # superseded by as-dunas-v2.pdf
 
 ESCOLARES_TITLES = {
-    'a-vida.pdf': 'A vida',
-    'agricultura-e-diversidade.pdf': 'Agricultura e diversidade',
-    'agricultura-e-domesticacao.pdf': 'Agricultura e domesticação',
-    'animais-vs-plantas.pdf': 'Animais vs. plantas',
-    'as-dunas-v2.pdf': 'As dunas',
-    'aves-nas-cidades.pdf': 'Aves nas cidades',
-    'biomas-e-factores-abioticos.pdf': 'Biomas e factores abióticos',
-    'biotecnologia.pdf': 'Biotecnologia',
-    'clima-e-ecossistemas.pdf': 'Clima e ecossistemas',
-    'clima-esta-a-mudar.pdf': 'O clima está a mudar',
-    'construir-ninhos.pdf': 'Construir ninhos',
-    'descobrindo-o-litoral.pdf': 'Descobrindo o litoral',
-    'diversidade-da-vida.pdf': 'Diversidade da vida',
-    'ecossistemas.pdf': 'Ecossistemas',
-    'escola-ecologica.pdf': 'Escola ecológica',
-    'estrutura-das-plantas.pdf': 'Estrutura das plantas',
-    'fazer-um-charco.pdf': 'Fazer um charco',
-    'floresta-na-escola.pdf': 'Floresta na escola',
-    'fontes-energeticas.pdf': 'Fontes energéticas',
-    'golfinhos-do-sado.pdf': 'Golfinhos do Sado',
-    'homem-e-biodiversidade.pdf': 'Homem e biodiversidade',
-    'inspeccoes-costeiras.pdf': 'Inspecções costeiras',
-    'o-lobo.pdf': 'O lobo',
-    'poluicao-do-ar.pdf': 'Poluição do ar',
-    'predacao-e-mimetismo.pdf': 'Predação e mimetismo',
-    'residuos-e-reciclagem.pdf': 'Resíduos e reciclagem',
-    'sabias-que-natureza.pdf': 'Sabias que… (natureza)',
-    'sabias-que-reciclagem.pdf': 'Sabias que… (reciclagem)',
-    'salvar-os-oceanos.pdf': 'Salvar os oceanos',
-    'solo-e-rochas.pdf': 'Solo e rochas',
-    'vida-em-perigo.pdf': 'Vida em perigo',
-    'vida-nas-cidades-cont.pdf': 'Vida nas cidades (cont.)',
-    'vida-nas-cidades.pdf': 'Vida nas cidades',
+    "a-vida.pdf": "A vida",
+    "agricultura-e-diversidade.pdf": "Agricultura e diversidade",
+    "agricultura-e-domesticacao.pdf": "Agricultura e domesticação",
+    "animais-vs-plantas.pdf": "Animais vs. plantas",
+    "as-dunas-v2.pdf": "As dunas",
+    "aves-nas-cidades.pdf": "Aves nas cidades",
+    "biomas-e-factores-abioticos.pdf": "Biomas e factores abióticos",
+    "biotecnologia.pdf": "Biotecnologia",
+    "clima-e-ecossistemas.pdf": "Clima e ecossistemas",
+    "clima-esta-a-mudar.pdf": "O clima está a mudar",
+    "construir-ninhos.pdf": "Construir ninhos",
+    "descobrindo-o-litoral.pdf": "Descobrindo o litoral",
+    "diversidade-da-vida.pdf": "Diversidade da vida",
+    "ecossistemas.pdf": "Ecossistemas",
+    "escola-ecologica.pdf": "Escola ecológica",
+    "estrutura-das-plantas.pdf": "Estrutura das plantas",
+    "fazer-um-charco.pdf": "Fazer um charco",
+    "floresta-na-escola.pdf": "Floresta na escola",
+    "fontes-energeticas.pdf": "Fontes energéticas",
+    "golfinhos-do-sado.pdf": "Golfinhos do Sado",
+    "homem-e-biodiversidade.pdf": "Homem e biodiversidade",
+    "inspeccoes-costeiras.pdf": "Inspecções costeiras",
+    "o-lobo.pdf": "O lobo",
+    "poluicao-do-ar.pdf": "Poluição do ar",
+    "predacao-e-mimetismo.pdf": "Predação e mimetismo",
+    "residuos-e-reciclagem.pdf": "Resíduos e reciclagem",
+    "sabias-que-natureza.pdf": "Sabias que… (natureza)",
+    "sabias-que-reciclagem.pdf": "Sabias que… (reciclagem)",
+    "salvar-os-oceanos.pdf": "Salvar os oceanos",
+    "solo-e-rochas.pdf": "Solo e rochas",
+    "vida-em-perigo.pdf": "Vida em perigo",
+    "vida-nas-cidades-cont.pdf": "Vida nas cidades (cont.)",
+    "vida-nas-cidades.pdf": "Vida nas cidades",
 }
 
 escolares_files = sorted(
-    [f for f in os.listdir(ESCOLARES_DIR) if f.endswith('.pdf') and f not in ESCOLARES_EXCLUDE],
-    key=lambda f: ESCOLARES_TITLES.get(f, f).lower()
+    [
+        f
+        for f in os.listdir(ESCOLARES_DIR)
+        if f.endswith(".pdf") and f not in ESCOLARES_EXCLUDE
+    ],
+    key=lambda f: ESCOLARES_TITLES.get(f, f).lower(),
 )
 escolares_section = '    <section id="escolares">\n'
-escolares_section += '      <h2>Textos Escolares</h2>\n'
+escolares_section += "      <h2>Textos Didácticos</h2>\n"
 escolares_section += '      <ol class="publications">\n'
 for f in escolares_files:
-    title = ESCOLARES_TITLES.get(f, f.replace('-', ' ').replace('.pdf', '').title())
-    href = f'pdfs/Porto Editora/{f}'
+    title = ESCOLARES_TITLES.get(f, f.replace("-", " ").replace(".pdf", "").title())
+    href = f"pdfs/Porto Editora/{f}"
     escolares_section += f'        <li>{title} <a href="{href}" class="pdf-link" title="Descarregar PDF" target="_blank">PDF</a></li>\n'
-escolares_section += '      </ol>\n'
-escolares_section += '    </section>\n\n'
+escolares_section += "      </ol>\n"
+escolares_section += "    </section>\n\n"
 escritos_sections += escolares_section
 
-toc_pills = '\n'.join([f'        <a href="#{sec["id"]}">{sec.get("nav_label", sec["label"])}</a>' for sec in top_sections if sum(len(s[1]) for s in sec['subs']) > 0])
-toc_pills += '\n        <a href="#escolares">Escolares</a>'
-total_items = sum(sum(len(s[1]) for s in sec['subs']) for sec in top_sections) + len(escolares_files)
+toc_pills = "\n".join(
+    [
+        f'        <a href="#{sec["id"]}">{sec.get("nav_label", sec["label"])}</a>'
+        for sec in top_sections
+        if sum(len(s[1]) for s in sec["subs"]) > 0
+    ]
+)
+toc_pills += '\n        <a href="#escolares">Didácticos</a>'
+total_items = sum(sum(len(s[1]) for s in sec["subs"]) for sec in top_sections) + len(
+    escolares_files
+)
 
-escritos_html = f'''<!DOCTYPE html>
+escritos_html = f"""<!DOCTYPE html>
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
@@ -557,14 +646,14 @@ escritos_html = f'''<!DOCTYPE html>
   </footer>
 </body>
 </html>
-'''
+"""
 
-with open(os.path.join(SITE, 'escritos.html'), 'w', encoding='utf-8') as f:
+with open(os.path.join(SITE, "escritos.html"), "w", encoding="utf-8") as f:
     f.write(escritos_html)
-print('Generated escritos.html')
+print("Generated escritos.html")
 
 # --- Generate index.html ---
-index_html = f'''<!DOCTYPE html>
+index_html = """<!DOCTYPE html>
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
@@ -594,7 +683,7 @@ index_html = f'''<!DOCTYPE html>
 
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
-  {{
+  {
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Nuno Quental",
@@ -602,15 +691,15 @@ index_html = f'''<!DOCTYPE html>
     "description": "Investigador em sustentabilidade urbana e engenheiro do ambiente.",
     "url": "https://coolio1.github.io/",
     "image": "https://coolio1.github.io/nuno.jpg",
-    "affiliation": {{
+    "affiliation": {
       "@type": "Organization",
       "name": "Comissão Europeia"
-    }},
+    },
     "sameAs": [
       "https://www.linkedin.com/in/nquental",
       "https://scholar.google.com/citations?user=NoCUypYAAAAJ"
     ]
-  }}
+  }
   </script>
 
   <link rel="stylesheet" href="style.css">
@@ -717,18 +806,20 @@ index_html = f'''<!DOCTYPE html>
   </footer>
 </body>
 </html>
-'''
+"""
 
-with open(os.path.join(SITE, 'index.html'), 'w', encoding='utf-8') as f:
+with open(os.path.join(SITE, "index.html"), "w", encoding="utf-8") as f:
     f.write(index_html)
-print('Generated index.html')
-print('Done! (style.css is maintained separately)')
+print("Generated index.html")
+print("Done! (style.css is maintained separately)")
 
 # CSS is now maintained as a separate file, not generated here
-import sys; sys.exit(0)
+import sys
+
+sys.exit(0)
 
 # --- DEPRECATED Generate style.css ---
-css = '''/* Nuno Quental — Portfolio */
+css = """/* Nuno Quental — Portfolio */
 :root {
   --text: #2c2c2c;
   --bg: #fafafa;
@@ -873,8 +964,8 @@ footer {
   h1 { font-size: 1.6rem; }
   .toc a { display: block; margin-right: 0; }
 }
-'''
+"""
 
-with open(os.path.join(SITE, 'style.css'), 'w', encoding='utf-8') as f:
+with open(os.path.join(SITE, "style.css"), "w", encoding="utf-8") as f:
     f.write(css)
-print('Generated style.css')
+print("Generated style.css")
