@@ -2,22 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://coolio1.github.io/</loc>
-    <lastmod>2026-04-01</lastmod>
+    <lastmod>2026-04-04</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://coolio1.github.io/escritos.html</loc>
-    <lastmod>2026-04-01</lastmod>
+    <lastmod>2026-04-04</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://coolio1.github.io/activismo.html</loc>
-    <lastmod>2026-04-01</lastmod>
+    <lastmod>2026-04-04</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://coolio1.github.io/activismo-quercus.html</loc>
-    <lastmod>2026-04-01</lastmod>
+    <lastmod>2026-04-04</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://coolio1.github.io/activismo-parque.html</loc>
+    <lastmod>2026-04-04</lastmod>
     <priority>0.7</priority>
   </url>
 </urlset>
