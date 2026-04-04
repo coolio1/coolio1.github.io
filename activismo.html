@@ -127,6 +127,32 @@
     }
     .texto-body p { margin-bottom: 0.8rem; }
     .texto-body p:last-child { margin-bottom: 0; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.75rem;
+      padding: 1rem 0;
+    }
+    .gallery-grid a {
+      display: block;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.15s;
+    }
+    .gallery-grid a:hover { transform: scale(1.03); }
+    .gallery-grid img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-grid figcaption {
+      font-size: 0.78rem;
+      color: var(--ink-light);
+      padding: 0.4rem 0.5rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -588,6 +614,18 @@ Escola Superior de Biotecnologia da Universidade Católica Portuguesa)</p>
             <h3>Quercus — Núcleo do Porto</h3>
             <p>Coordenação do Núcleo do Porto da Quercus — Associação Nacional de Conservação da Natureza. Produção de 198 comunicados de imprensa sobre temas como conservação da natureza, resíduos e co-incineração, transportes e mobilidade, ordenamento do território, energia e alterações climáticas. Dinamização de campanhas e grupos de trabalho sobre a Barrinha de Esmoriz, Reserva Ornitológica de Mindelo, Rio Tinto e amianto em Vila das Aves. Publicação do boletim Ecografia.</p>
             <a href="activismo-quercus.html" class="org-link">213 textos &rarr;</a>
+            <details class="texto-item" style="margin-top:1rem;">
+              <summary class="texto-header">
+                <span class="texto-title">Galeria de imagens</span>
+              </summary>
+              <div class="gallery-grid">
+                <figure><a href="img/activismo/quercus/logo.jpg" target="_blank"><img src="img/activismo/quercus/logo.jpg" alt="Logótipo da Quercus" loading="lazy"></a><figcaption>Logótipo da Quercus</figcaption></figure>
+                <figure><a href="img/activismo/quercus/cartaz-globalizacao.jpg" target="_blank"><img src="img/activismo/quercus/cartaz-globalizacao.jpg" alt="Cartaz da conferência sobre globalização" loading="lazy"></a><figcaption>Conferência na ESB</figcaption></figure>
+                <figure><a href="img/activismo/quercus/mapa-mindelo.jpg" target="_blank"><img src="img/activismo/quercus/mapa-mindelo.jpg" alt="Mapa da denúncia em Mindelo" loading="lazy"></a><figcaption>Denúncia — estrada em Mindelo</figcaption></figure>
+                <figure><a href="img/activismo/quercus/porto-satelite.jpg" target="_blank"><img src="img/activismo/quercus/porto-satelite.jpg" alt="Imagem satélite do Porto" loading="lazy"></a><figcaption>Porto — imagem satélite</figcaption></figure>
+                <figure><a href="img/activismo/quercus/veados.jpg" target="_blank"><img src="img/activismo/quercus/veados.png" alt="Campanha de conservação — veados" loading="lazy"></a><figcaption>Campanha de conservação</figcaption></figure>
+              </div>
+            </details>
           </div>
         </div>
       </div>
@@ -600,6 +638,19 @@ Escola Superior de Biotecnologia da Universidade Católica Portuguesa)</p>
             <h3>Movimento pelo Parque da Cidade</h3>
             <p>Movimento cívico contra a urbanização do Parque da Cidade do Porto. Lançou um referendo de iniciativa popular, mobilizou milhares de cidadãos e personalidades, e obteve uma vitória histórica: o Parque foi salvo. Do manifesto fundador — «Como ter um Parque da Cidade verde em oito parágrafos» — à declaração final de que «O Parque da Cidade está a salvo». <a href="https://arquivo.pt/wayback/20091217205446/http://parquedacidade.no.sapo.pt/" target="_blank" class="url-link" title="Site original (Arquivo.pt)">URL</a></p>
             <a href="activismo-parque.html" class="org-link">22 comunicados &rarr;</a>
+            <details class="texto-item" style="margin-top:1rem;">
+              <summary class="texto-header">
+                <span class="texto-title">Galeria de imagens</span>
+              </summary>
+              <div class="gallery-grid">
+                <figure><a href="img/activismo/parque-cidade/logo.png" target="_blank"><img src="img/activismo/parque-cidade/logo.png" alt="Logótipo do Movimento pelo Parque da Cidade" loading="lazy"></a><figcaption>Logótipo do movimento</figcaption></figure>
+                <figure><a href="img/activismo/parque-cidade/vista-aerea.jpg" target="_blank"><img src="img/activismo/parque-cidade/vista-aerea.jpg" alt="Vista aérea do Parque da Cidade" loading="lazy"></a><figcaption>Vista aérea</figcaption></figure>
+                <figure><a href="img/activismo/parque-cidade/limites.jpg" target="_blank"><img src="img/activismo/parque-cidade/limites.jpg" alt="Limites do Parque da Cidade" loading="lazy"></a><figcaption>Limites do parque</figcaption></figure>
+                <figure><a href="img/activismo/parque-cidade/mapa-construcoes.jpg" target="_blank"><img src="img/activismo/parque-cidade/mapa-construcoes.jpg" alt="Mapa das frentes de construção" loading="lazy"></a><figcaption>Frentes de construção</figcaption></figure>
+                <figure><a href="img/activismo/parque-cidade/aldoar.jpg" target="_blank"><img src="img/activismo/parque-cidade/aldoar.jpg" alt="Pressão imobiliária em Aldoar" loading="lazy"></a><figcaption>Pressão imobiliária — Aldoar</figcaption></figure>
+                <figure><a href="img/activismo/parque-cidade/cartoon.jpg" target="_blank"><img src="img/activismo/parque-cidade/cartoon.jpg" alt="Cartoon — Encontrei o Parque da Cidade!" loading="lazy"></a><figcaption>«Encontrei o Parque da Cidade!»</figcaption></figure>
+              </div>
+            </details>
           </div>
         </div>
       </div>
