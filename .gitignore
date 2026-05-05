@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.claude/
+.superpowers/
+*.bak
+.env
+.secrets.baseline
+.mcp.json

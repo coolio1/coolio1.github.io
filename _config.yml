@@ -1,0 +1,14 @@
+title: "Nuno Quental"
+description: "Sustentabilidade urbana, energia e território."
+theme: null
+
+exclude:
+  - "*.py"
+  - "__pycache__/"
+  - ".claude/"
+  - ".superpowers/"
+  - "*.bak"
+  - "CLAUDE.md"
+  - "data/"
+  - "scripts/"
+  - "requirements.txt"
