@@ -83,16 +83,29 @@
         <p>Mapas interactivos de vegetação, uso do solo e mudanças urbanas na cidade do Porto, com dados de satélite abertos. Como mudou a paisagem verde da cidade desde 1947?</p>
         <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/" target="_blank" class="cta cta-small">Explorar o projecto &rarr;</a>
         <h3 class="blog-heading">Últimos artigos</h3>
-        <ul class="blog-list">
-          <li>
-            <time>30 Mar</time>
-            <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/posts/acessibilidade-verde-publico-porto/" target="_blank">Acessibilidade a espaços verdes públicos no Porto</a>
-          </li>
-          <li>
-            <time>21 Mar</time>
-            <a href="https://coolio1.github.io/porto_areas_verdes_mudanca/posts/mudanca-verde-porto-1985-2025/" target="_blank">Dinâmicas de ocupação do solo e cobertura vegetal (1985–2025)</a>
-          </li>
+        <ul id="pv-articles" class="blog-list">
+          <li><time>22 Abr</time><a href="https://coolio1.github.io/porto_areas_verdes_mudanca/posts/carta-aberta-aurificia/" target="_blank">Carta aberta pela reformulação do Projeto para a Antiga Companhia Aurífícia</a></li>
+          <li><time>30 Mar</time><a href="https://coolio1.github.io/porto_areas_verdes_mudanca/posts/acessibilidade-verde-publico-porto/" target="_blank">Acessibilidade a espaços verdes públicos no Porto</a></li>
+          <li><time>21 Mar</time><a href="https://coolio1.github.io/porto_areas_verdes_mudanca/posts/mudanca-verde-porto-1985-2025/" target="_blank">Dinâmicas de ocupação do solo e cobertura vegetal (1985–2025)</a></li>
         </ul>
+        <script>
+        fetch('/porto_areas_verdes_mudanca/feed.xml')
+          .then(function(r){ return r.text(); })
+          .then(function(xml){
+            var doc = new DOMParser().parseFromString(xml, 'text/xml');
+            var entries = Array.from(doc.querySelectorAll('entry')).slice(0, 4);
+            if (!entries.length) return;
+            var ul = document.getElementById('pv-articles');
+            ul.innerHTML = entries.map(function(e){
+              var title = e.querySelector('title').textContent;
+              var link = e.querySelector('link').getAttribute('href');
+              var date = new Date(e.querySelector('published').textContent);
+              var d = date.toLocaleDateString('pt-PT', {day: 'numeric', month: 'short'});
+              return '<li><time>' + d + '</time><a href="' + link + '" target="_blank">' + title + '</a></li>';
+            }).join('');
+          })
+          .catch(function(){});
+        </script>
       </div>
       <div class="projeto-imagens">
         <figure>
