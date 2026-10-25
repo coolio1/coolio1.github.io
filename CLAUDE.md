@@ -81,3 +81,6 @@ CV/
 ## Jekyll — comandos essenciais
 
 Ver skill `/jekyll`. Config específica deste site: `baseurl` vazio (repo principal `coolio1.github.io`); `generate_site.py` consome `C:\Users\quent\Zotero\export.json`.
+
+## NotebookLM
+- Antes de responder sobre candidaturas, experiência ou vagas, consultar os cadernos com a tag `cv` (registo em `..\NotebookLM\notebooks.md`) via `cross_notebook_query`, e antes de qualquer `WebSearch` sobre esses temas. Se não consultar, dizer porquê na resposta.
